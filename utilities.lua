@@ -19,8 +19,25 @@ function CheckCollisionBoundingBox(BoundingBox1, BoundingBox2)
 end
 
 function GetTileXYFromXY(x, y)
-	local tileX = math.floor(randX / 16) +1
-	local tileY = math.floor(randY / 16) +1
+	local tileX = math.floor(x / 16) +1
+	local tileY = math.floor(y / 16) +1
 	
 	return tileX, tileY
+end
+
+function GetTileXYFromXY2(x, y)
+	local tileX = math.floor(x / 16)
+	local tileY = math.floor(y / 16)
+	
+	return tileX, tileY
+end
+
+function Darken()
+	--love.graphics.setBlendMode("alpha")
+	--love.graphics.setColor(50,50,50)
+end
+
+function Lighten()
+	--love.graphics.setBlendMode("alpha")
+	--love.graphics.setColor(190,190,190)
 end

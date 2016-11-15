@@ -1,3 +1,5 @@
+require 'lightSource'
+
 local TileWidth, TileHeight
 MapWidth = 0
 MapHeight = 0
@@ -8,16 +10,19 @@ TileTable = {}
 
 function LoadMap(path)
 	love.filesystem.load(path)()
+	
 end
 
-function GetTileBoundingBox(TileColumn, TileRow)
-	local x, y = 0, 0
-	
-	bbY = (TileRow) * TileHeight
-    bbX = (TileColumn) * TileWidth
+function GetTileBoundingBox(TileColumn, TileRow)	
+	local bbY = (TileRow) * TileHeight
+    local bbX = (TileColumn) * TileWidth
 	
 	local TileBoundingBox = { x = bbX, y = bbY, w = TileWidth, h = TileHeight }
 	return TileBoundingBox
+end
+
+function MapUpdate(dt)
+
 end
 
 function NewMap(tileWidth, tileHeight, tileSetPath, quadInfo, tileString)
@@ -62,12 +67,34 @@ function NewMap(tileWidth, tileHeight, tileSetPath, quadInfo, tileString)
 	end
 end
 
-function DrawMap()
+function IsTileInTheLight(tileBox)
+	for i,v in ipairs(LightSources) do		
+		if(CheckCollisionBoundingBox(tileBox, v.lightBox)) then
+			return true
+		end
+	end
+	
+	return false
+end
+
+function DrawMap()	
 	for columnIndex,column in ipairs(TileTable) do
 		for rowIndex,row in ipairs(column) do
-		  local x,y = (columnIndex-1)*TileWidth, (rowIndex-1)*TileHeight
-		  local character = TileTable[columnIndex][rowIndex].TableCharacter
-		  love.graphics.draw(Tileset, Quads[character], x, y)
+			local x,y = (columnIndex-1)*TileWidth, (rowIndex-1)*TileHeight
+		    local character = TileTable[columnIndex][rowIndex].TableCharacter
+		  
+			--for i,v in ipairs(LightSources) do		  
+			--	local tileBB = GetTileBoundingBox(columnIndex -1,rowIndex -1)
+			
+			--	if IsTileInTheLight(tileBB) then
+			--	   Lighten()
+			--	else
+			--		Darken()
+			--	end
+			--end
+		  
+			
+			love.graphics.draw(Tileset, Quads[character], x, y)
 		end
 	end
 end
